@@ -67,8 +67,6 @@ const MainLayout = (props) => {
     
 
     const [history, sethistory] = useState([])
-//    const [len, setlen] = useState(3600)    
-//    const [nb, setnb] = useState(1)
     const [sensor, setsensor] = useState({})
     const [hasData, sethasData] = useState(false)
     const [heartPulse, setheartPulse] = useState(false)
@@ -133,12 +131,12 @@ const MainLayout = (props) => {
 
             <Grid container justify="center" spacing={1}>
               <Grid className={classes.grid} item sm={6}>
-                <TempMetrics values={metricsData.metrics}/>
+                <TempMetrics values={metricsData.metrics} hasData={hasData}/>
                 <TempChart history={history} value={metricsData} hasData={hasData}/>
               </Grid>
 
               <Grid className={classes.grid} item sm={6}>
-                <HumMetrics values={metricsData.metrics}/>              
+                <HumMetrics values={metricsData.metrics} hasData={hasData}/>              
                 <HumChart history={history} value={metricsData} hasData={hasData}/>
               </Grid>
             </Grid>

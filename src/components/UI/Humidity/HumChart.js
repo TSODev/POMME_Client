@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
   chart: {
       width: '100%',
       height: chartHeight,
-      backgroundColor: theme.palette.background.yellowpaper,
+      backgroundColor: theme.palette.background.paper,
       borderRadius: theme.spacing(1),
     },
 }),'HumChart');

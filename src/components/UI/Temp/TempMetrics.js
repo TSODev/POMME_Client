@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
     metrics: {
+        width: '98%',
         padding: theme.spacing(1),
         margin: theme.spacing(1),
         backgroundColor: theme.palette.background.paper,
@@ -25,7 +26,7 @@ const TempMetrics = (props) => {
         <React.Fragment>
         <div className={classes.metrics}>
         <Grid container alignItems="center" spacing={1}>
-          {/* <Grid item xs={2} sm={2}>
+          <Grid item xs={2} sm={2}>
             <Metric
               value={props.values.tmin}
               unit="°C"
@@ -33,17 +34,17 @@ const TempMetrics = (props) => {
               variantvalue="body1"
               label="Min"
             />
-          </Grid> */}
+          </Grid>
           <Grid item xs={8} sm={8}>
             <Metric
-              value={props.values.temp}
+              value={ props.hasData ? props.values.temp : '--.-'}
               unit="°C"
               variantlabel="h5"
               variantvalue="h3"
               label="Température"
             />
           </Grid>
-          {/* <Grid item xs={2} sm={2}>
+          <Grid item xs={2} sm={2}>
             <Metric
               value={props.values.tmax}
               unit="°C"
@@ -51,7 +52,7 @@ const TempMetrics = (props) => {
               variantvalue="body1"
               label="Max"
             />
-          </Grid> */}
+          </Grid>
         </Grid>
         </div>
       </React.Fragment>
