@@ -29,7 +29,7 @@ const HumMetrics = (props) => {
         <Grid container alignItems="center" spacing={1}>
           <Grid className={classes.grid} item xs={2}>
             <Metric
-              value={props.values.hmin}
+              value={props.minmax.minHum}
               unit="%"
               variantlabel="body2"
               variantvalue="body1"
@@ -38,7 +38,7 @@ const HumMetrics = (props) => {
           </Grid>
           <Grid className={classes.grid} item xs={8}>
             <Metric
-              value={ props.hasData ? props.values.hum : '--.-'}
+              value={ props.hasData ? props.values.metrics.hum : '--.-'}
               unit="%"
               variantlabel="h5"
               variantvalue="h3"
@@ -47,7 +47,7 @@ const HumMetrics = (props) => {
           </Grid>
           <Grid className={classes.grid} item xs={2}>
             <Metric
-              value={props.values.hmax}
+              value={props.minmax.maxHum}
               unit="%"
               variantlabel="body2"
               variantvalue="body1"

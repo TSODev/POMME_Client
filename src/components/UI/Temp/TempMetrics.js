@@ -20,7 +20,7 @@ const TempMetrics = (props) => {
 
     useEffect(() => {
         console.log('[TEMPMETRICS]')
-    }, [props.values.temp])
+    }, [props.values.metrics.temp])
 
     return (
         <React.Fragment>
@@ -28,7 +28,7 @@ const TempMetrics = (props) => {
         <Grid container alignItems="center" spacing={1}>
           <Grid item xs={2} sm={2}>
             <Metric
-              value={props.values.tmin}
+              value={props.minmax.minTemp}
               unit="°C"
               variantlabel="body2"
               variantvalue="body1"
@@ -37,7 +37,7 @@ const TempMetrics = (props) => {
           </Grid>
           <Grid item xs={8} sm={8}>
             <Metric
-              value={ props.hasData ? props.values.temp : '--.-'}
+              value={ props.hasData ? props.values.metrics.temp : '--.-'}
               unit="°C"
               variantlabel="h5"
               variantvalue="h3"
@@ -46,7 +46,7 @@ const TempMetrics = (props) => {
           </Grid>
           <Grid item xs={2} sm={2}>
             <Metric
-              value={props.values.tmax}
+              value={props.minmax.maxTemp}
               unit="°C"
               variantlabel="body2"
               variantvalue="body1"

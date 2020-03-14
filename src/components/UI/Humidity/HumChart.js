@@ -30,7 +30,7 @@ const HumChart = (props) => {
             <Grid item xs={12}>
                 <Chart
                   history={props.history}
-                  metric="hum"
+                  metric="metrics.hum"
                   min="hmin"
                   max="hmax"
                   value={props.value}

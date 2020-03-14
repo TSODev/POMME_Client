@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
     metric: {
-        height: 80,
+//        height: 80,
         backgroundColor: theme.palette.background.paper,
         padding: theme.spacing(0),
         marginTop: theme.spacing(0),

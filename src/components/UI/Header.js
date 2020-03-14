@@ -29,8 +29,8 @@ const Header = (props) => {
 
     useEffect(() => {
         console.log('[HEADER]');
-        const id=socket.id;
-        socket.emit('historyRequest', {len: nb * len});  //      console.log('History Changed !',value);
+        const id =localStorage.getItem('deviceId')
+        socket.emit('historyRequest', {len: nb * len, id: id});  //      console.log('History Changed !',value);
     }, [nb, len])
 
     const onHistoryChange = (nb, len) => {

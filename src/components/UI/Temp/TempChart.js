@@ -22,7 +22,7 @@ const TempChart = (props) => {
 
     useEffect(() => {
         console.log('[TEMPCHART]')
-    }, [])
+    }, [props.value])
 
     if (props.hasData) {
       return (
@@ -31,7 +31,7 @@ const TempChart = (props) => {
             <Grid item xs={12}>
                 <Chart
                   history={props.history}
-                  metric="temp"
+                  metric="metrics.temp"
                   min="tmin"
                   max="tmax"
                   value={props.value}
