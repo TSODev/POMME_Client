@@ -2,16 +2,20 @@ import React, {Component} from 'react';
 import './App.css';
 import socket from './utilities/socketConnection';
 import moment from 'moment';
+import 'moment/locale/fr';
 
 import MainLayout from './components/UI/MainLayout';
-import Spinner from './components/UI/Spinner';
 import SyncLoader from 'react-spinners/SyncLoader';
 
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 
 class App extends Component {
 
      constructor() {
        super();
+       moment.locale('fr');
+       console.log(moment.locale());
        socket.on('watchdog', (data) => {
         console.log('[APP] Watchdog', data);
         const id = localStorage.getItem('deviceId')
@@ -30,7 +34,7 @@ class App extends Component {
                   hmin: 30,
                   hmax: 30,
                 },
-              moment: moment().format('x'),
+              moment: moment().format(''),
                },
       history: [],
       sensor: {},
@@ -43,9 +47,11 @@ class App extends Component {
     console.log('[APP] mounted...')
 
     socket.on('metric',(data) => {
-      console.log('[APP] Socket :', data);
       const values = data.mesure;
-      this.setState({metric: {values, moment}})
+      console.log('[APP] Socket :', values);
+      var now = moment();
+//      values.moment=now.locale('fr');
+      this.setState({metric: {values}})
       this.setState({hasData: true})
         })
 
@@ -81,13 +87,18 @@ class App extends Component {
       );
     } else {
       return (
-
+        <React.Fragment>
+            <Box>
+              <Typography variant="h4">
+                En attente d'une mesure
+              </Typography>
+            </Box>
             <SyncLoader 
               color='#ef702b'
               size={30}
               margin={5}
             />
-
+        </React.Fragment>
       )
     }
 

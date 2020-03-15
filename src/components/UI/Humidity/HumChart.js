@@ -21,7 +21,7 @@ const HumChart = (props) => {
 
     useEffect(() => {
         console.log('[HUMCHART]')
-    }, [])
+    }, [props.value])
 
     if (props.hasData) {
       return (

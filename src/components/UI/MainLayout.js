@@ -13,6 +13,8 @@ import moment from 'moment';
 
 import { makeStyles } from '@material-ui/core/styles';
 
+moment.locale('fr')
+
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',

@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react'
 
 import moment from 'moment';
+import 'moment/locale/fr';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { LineChart, Line, XAxis , YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 
 moment.locale('fr');
-console.log(moment.locale());
 
 const chartWidth = 340
 const chartHeight = 250
@@ -54,12 +54,12 @@ const Chart = (props) => {
   const formatXAxis = (tickItem) => {
       var x = moment(tickItem,'x');
       x.locale('fr')
-      return x.format('ddd hh mm')
+      return x.format('ddd D à HH:mm')
   }
 
   const formatTooltipLabel = (tickItem) => {
     //      console.log('[CHART]-Tick',tickItem)
-          return moment(tickItem,'x').format('hh mm ss')
+          return moment(tickItem,'x').format('HH:mm:ss')
       }
 
   const formatTolltip = (value, name, props) => {
@@ -84,7 +84,7 @@ const Chart = (props) => {
                   dataKey = 'moment'
                   domain = {['dataMin', 'dataMax']}
   //                ticks={time}
- //                 name = 'Time'
+                  name = 'Heure'
                   tickFormatter = {formatXAxis}
                   type = 'number'
                 />

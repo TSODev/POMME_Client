@@ -4,7 +4,7 @@ const uniqueRandomString= '_' + Math.random().toString(36).toUpperCase().substri
 localStorage.setItem('deviceId', uniqueRandomString);
 
 
-let socket = io('http://raspberrypi:3000');
+let socket = io('http://raspberrypi:5000');
 socket.emit('clientConnected',uniqueRandomString);
 console.log('Client Connected :', socket)
 
