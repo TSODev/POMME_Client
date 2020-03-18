@@ -59,7 +59,7 @@ const Chart = (props) => {
 
   const formatTooltipLabel = (tickItem) => {
     //      console.log('[CHART]-Tick',tickItem)
-          return moment(tickItem,'x').format('HH:mm:ss')
+          return moment(tickItem,'x').format('ddd - HH:mm:ss')
       }
 
   const formatTolltip = (value, name, props) => {
