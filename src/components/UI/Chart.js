@@ -2,31 +2,30 @@ import React, {useState, useEffect} from 'react'
 
 import moment from 'moment';
 import 'moment/locale/fr';
-import { makeStyles } from '@material-ui/core/styles';
+//import { makeStyles } from '@material-ui/core/styles';
 
 import { LineChart, Line, XAxis , YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 
 moment.locale('fr');
 
-const chartWidth = 340
+//const chartWidth = 340
 const chartHeight = 250
-const useStyles = makeStyles(theme => ({
-    root: {
-        width: chartWidth,
-        height: chartHeight,
-        backgroundColor: theme.palette.background.paper,
-        borderRadius: theme.spacing(1),
+// const useStyles = makeStyles(theme => ({
+//     root: {
+//         width: chartWidth,
+//         height: chartHeight,
+//         backgroundColor: theme.palette.background.paper,
+//         borderRadius: theme.spacing(1),
 
-      },
-  }));
+//       },
+//   }));
 
 const Chart = (props) => {
 
-    const classes = useStyles();
+//    const classes = useStyles();
 
     const [MetricsData, setMetricsData] = useState([])
-    const [time, settime] = useState([])
 
 
     useEffect(() => {
@@ -104,27 +103,3 @@ const Chart = (props) => {
 }
 
 export default Chart
-
-// const TimeSeriesChart = ({ chartData }) => (
-//   <ResponsiveContainer width = '95%' height = {500} >
-//     <ScatterChart>
-//       <XAxis
-//         dataKey = 'time'
-//         domain = {['auto', 'auto']}
-//         name = 'Time'
-//         tickFormatter = {(unixTime) => moment(unixTime).format('HH:mm Do')}
-//         type = 'number'
-//       />
-//       <YAxis dataKey = 'value' name = 'Value' />
-
-//       <Scatter
-//         data = {chartData}
-//         line = {{ stroke: '#eee' }}
-//         lineJointType = 'monotoneX'
-//         lineType = 'joint'
-//         name = 'Values'
-//       />
-
-//     </ScatterChart>
-//   </ResponsiveContainer>
-// )

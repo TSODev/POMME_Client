@@ -1,26 +1,25 @@
 import React, {Component} from 'react';
+import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import socket from './utilities/socketConnection';
 import moment from 'moment';
 import 'moment/locale/fr';
+import axios from './axios';
 
-import MainLayout from './components/UI/MainLayout';
-import SyncLoader from 'react-spinners/SyncLoader';
+import MainComponent from './components/MainComponent';
+import Sensor from './components/UI/Sensor';
 
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
+const RABBIT = 'rabbitmq';
+const SERIAL = 'serial';
+const BME280 = 'bme280';
+const DHT22 = 'dht22';
 
 class App extends Component {
+  
 
      constructor() {
        super();
        moment.locale('fr');
-       console.log(moment.locale());
-       socket.on('watchdog', (data) => {
-        console.log('[APP] Watchdog', data);
-        const id = localStorage.getItem('deviceId')
-        socket.emit('watchdogEcho', {id})
-      })
      }
 
     state = {
@@ -36,10 +35,36 @@ class App extends Component {
                 },
               moment: moment().format(''),
                },
+        esp32metric: {
+              values: {
+                  temp: 20,
+                  hum: 30,
+                  pres: 0,
+                },
+              moment: moment().format(''),
+                },
       history: [],
       sensor: {},
+      devices: [],
     };
     
+    signalDevice = (id, type, connectedBy) => {
+      const theDevice = this.state.devices.filter(d => d.id === id);
+      if (theDevice.length === 0) {
+//        console.log('[APP] new device : ', id);
+        const newDevice = {"isNew": true, "id": id, "alias":'', "connect": connectedBy, "type": type };
+//        const devices = [...this.state.devices];
+
+        axios.post('/add', JSON.stringify(newDevice))
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+      }
+    }
 
 
   componentDidMount() {
@@ -49,11 +74,16 @@ class App extends Component {
     socket.on('metric',(data) => {
       const values = data.mesure;
       console.log('[APP] Socket :', values);
-      var now = moment();
-//      values.moment=now.locale('fr');
+      this.signalDevice('Serial_1', DHT22, SERIAL)
       this.setState({metric: {values}})
       this.setState({hasData: true})
         })
+
+    socket.on('esp32metric', (data) => {
+      console.log('[APP] esp32metric :', data.mesure);
+      this.signalDevice(data.mesure.device, BME280, RABBIT)
+      this.setState({esp32metric: data.mesure})
+    })
 
     socket.on('startHistoricData',(data) => {
       console.log('[APP] History Start :', data);
@@ -71,39 +101,45 @@ class App extends Component {
     socket.on('sensorInfo',(data) => {
       console.log('[APP] sensor :', data);
       this.setState({sensor: data})
-      })
+      })   
+      
+
+      axios.get('/sensors')
+          .then ( response => {
+            this.setState({devices: response.data})
+          })
+          .catch ( err  => {
+            console.log(err)
+          })
 
 
-    
   }
+
+  
 
   render() {
-    if (this.state.hasData) {
-      return (
-        <MainLayout 
-          metric={this.state.metric} 
-          history={this.state.history}
-        />
-      );
-    } else {
-      return (
-        <React.Fragment>
-            <Box>
-              <Typography variant="h4">
-                En attente d'une mesure
-              </Typography>
-            </Box>
-            <SyncLoader 
-              color='#ef702b'
-              size={30}
-              margin={5}
+
+    return (
+      <React.Fragment>
+
+        <Switch>
+            <Route path="/" exact render={(props) => <MainComponent {...props} 
+                                                      hasData={this.state.hasData} 
+                                                      devices={this.state.devices}
+                                                      metric={this.state.metric}
+                                                      history={this.state.history}/>} 
             />
-        </React.Fragment>
-      )
-    }
+            <Route path="/sensor:Id" exact component={Sensor} 
+            />          
+        </Switch>
+
+        
+      </React.Fragment>
+
+    )
+
 
   }
-
 }
 
 export default App;

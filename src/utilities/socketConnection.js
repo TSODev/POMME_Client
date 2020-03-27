@@ -5,6 +5,9 @@ localStorage.setItem('deviceId', uniqueRandomString);
 
 
 let socket = io('http://raspberrypi:5000');
+//let socket = io('http://pi.famille-soulie.fr:35000');
+
+
 socket.emit('clientConnected',uniqueRandomString);
 console.log('Client Connected :', socket)
 

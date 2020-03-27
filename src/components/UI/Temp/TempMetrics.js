@@ -3,6 +3,7 @@ import React, {useEffect} from 'react'
 import Metric from '../metric';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import SVGTempIcon from '../SVGIcons/SVGTempIcon';
 
 const useStyles = makeStyles(theme => ({
     metrics: {
@@ -36,6 +37,7 @@ const TempMetrics = (props) => {
             />
           </Grid>
           <Grid item xs={8} sm={8}>
+              <SVGTempIcon />
             <Metric
               value={ props.hasData ? props.values.metrics.temp : '--.-'}
               unit="°C"

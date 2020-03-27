@@ -3,8 +3,7 @@ import React, {useEffect, useState} from 'react'
 import socket from '../../utilities/socketConnection';
 
 import HistorySelector from './HistorySelector';
-import Heart from './Heart';
-import Sensor from './Sensor'
+import SensorSetting from './SensorSetting'
 
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,7 +11,6 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
-        maxWidth: 360,
         height: 40,
         backgroundColor: theme.palette.background.paper,
         textAlign: 'left',
@@ -39,10 +37,15 @@ const Header = (props) => {
 //        socket.emit('historyRequest', {len: nb * len});  //      console.log('History Changed !',value);
     }
 
+    const sensorSettingOpenHandler = (isOpen) => {
+      console.log('Modal Clicked: ', isOpen, props)
+      props.switchModalSettings(isOpen)
+    }
+
 
     return (
         <React.Fragment>
-        <Grid container direction="row" justify="space-between" alignItems="flex-start" spacing={1}>
+        <Grid className={classes.root} container direction="row" justify="space-between" alignItems="flex-start" spacing={1}>
 
               <Grid item xs={8} sm={10}>
                 <HistorySelector onChange={onHistoryChange} history={{nb, len}}/>
@@ -51,7 +54,7 @@ const Header = (props) => {
                 <Heart show={props.pulse} />
               </Grid>               */}
               <Grid item xs={2} sm={1}>
-                <Sensor value={props.sensor}/>
+                <SensorSetting devices={props.devices} onSettingEnable={sensorSettingOpenHandler}/>
               </Grid>
 
         </Grid>

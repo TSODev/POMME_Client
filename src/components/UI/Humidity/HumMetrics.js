@@ -3,6 +3,7 @@ import React, {useEffect} from 'react'
 import Metric from '../metric';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import SVGHumIcon from '../SVGIcons/SVGHumIcon';
 
 const useStyles = makeStyles(theme => ({
     metrics: {
@@ -37,6 +38,7 @@ const HumMetrics = (props) => {
             />
           </Grid>
           <Grid className={classes.grid} item xs={8}>
+            <SVGHumIcon />
             <Metric
               value={ props.hasData ? props.values.metrics.hum : '--.-'}
               unit="%"

@@ -81,6 +81,7 @@ const MainLayout = (props) => {
     const [hasData, sethasData] = useState(false)
     const [heartPulse, setheartPulse] = useState(false)
 
+
     useEffect(() => {
       console.log('[MAINLAYOUT]>Metric');
       setmetricsData(props.metric.values)
@@ -121,6 +122,9 @@ const MainLayout = (props) => {
       });
     }
 
+    const switchSettings = (value) => {
+      console.log('Seetings : ', value);
+    }
 
 //============================================================
     
@@ -129,13 +133,13 @@ const MainLayout = (props) => {
       <React.Fragment>
 
           <Box className={classes.root}>
-            <Grid className={classes.grid} container>
+            {/* <Grid className={classes.grid} container>
               <Grid item sm={12}>
-                <Header pulse={heartPulse} sensor={sensor}/>
+                <Header pulse={heartPulse} devices={props.devices} switchModalSetting={switchSettings}/>
               </Grid>
-            </Grid>
+            </Grid> */}
 
-            <Grid className={classes.mesures} container justify="space-around" alignitem="center" spacing={1}>
+              <Grid className={classes.mesures} container justify="space-around" alignitem="center" spacing={1}>
               <Grid className={classes.grid} item sm={12}>
                 <TempMetrics values={metricsData} minmax= {minmax} hasData={hasData}/>
                 <TempChart history={history} value={metricsData} hasData={hasData}/>
@@ -145,7 +149,9 @@ const MainLayout = (props) => {
                 <HumMetrics values={metricsData} minmax= {minmax} hasData={hasData}/>              
                 <HumChart history={history} value={metricsData} hasData={hasData}/>
               </Grid>
-            </Grid>
+              </Grid>
+
+
           </Box>
 
       </React.Fragment> 

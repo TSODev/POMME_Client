@@ -1,8 +1,7 @@
-import React, {useRef, useState, useEffect} from 'react'
+import React, {useState} from 'react'
 
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
@@ -33,20 +32,8 @@ const HistorySelector = (props) => {
 
     const classes = useStyles();
 
-//    const selectedHistory = 0;
-
-    const inputLabel = useRef(null);
-    const [labelWidth, setLabelWidth] = useState(0);
     const [len, setlen] = useState(props.history.len)
     const [nb, setnb] = useState(props.history.nb)
-//    const [history, sethistory] = useState({nb: 1, len: 3600})
-
-//     useEffect(() => {
-//         console.log('[HISTORY]', props.history);
-// //      setLabelWidth(inputLabel.current.offsetWidth);
-//       setlen(props.history.len);
-//       setnb(props.history.nb)
-//     }, [props.history]);
 
 
     const changeHistoryNbHandler = (event) => {
@@ -85,7 +72,7 @@ const HistorySelector = (props) => {
                     id="history-select-outlined"
                     value={len}
                     onChange={changeHistoryDurationHandler}
-                    labelWidth={labelWidth}
+ //                   labelWidth={labelWidth}
                 >
                     <MenuItem value={60}>Minute(s)</MenuItem>
                     <MenuItem value={3600}>
