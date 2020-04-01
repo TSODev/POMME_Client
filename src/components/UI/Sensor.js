@@ -1,10 +1,7 @@
 import React, {useState, useEffect} from 'react';
-
-import axios from '../../axios';
-import SENSORS from '../../utilities/sensors'
+import { connect } from 'react-redux';
 
 import {useLocation, useHistory} from 'react-router-dom';
-//import { withRouter } from 'react-router-dom';
 
 import Typography from '@material-ui/core/Typography';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -20,6 +17,7 @@ import SensorCapabilities from './SensorCapabilities';
 import Spinner from './Spinner';
 
 import { makeStyles } from '@material-ui/core/styles';
+import * as actions from '../../redux/actions/index'
 
 
 const useStyles = makeStyles(theme => ({
@@ -38,7 +36,7 @@ const useStyles = makeStyles(theme => ({
         width: 250,
     },
     sensorconnect: {
-        height: 150,
+        height: 200,
         width: 200,
         marginTop: theme.spacing(5),
     },
@@ -71,31 +69,20 @@ const Sensor = (props) => {
     const [alias, setalias] = useState('')
     const [sensorimage, setsensorimage] = useState('')
     const [connectimage, setconnectimage] = useState('')
-    const [sensor, setsensor] = useState({loaded:false, error:false, device: {type: 'unknow', connect: 'unknow'}})
+    const [sensor, setsensor] = useState({loaded:false, error:false, device: {type: 'unknow', connect: 'unknow'}});
+    const [loaded, setloaded] = useState(false)
+    const [capabilities, setcapabilities] = useState({});
 
     useEffect(() => {
-        console.log('[SENSOR]-id', id);
-        axios
-        .get("/sensor?Id=" + id)
-        .then(function(response) {
-                console.log(response.data);
-                setsensor({loaded: true, error: false, device: JSON.parse(response.data)})
-        })
-        .catch(function(error) {
-                console.log(error);
-                return({error: true})
-        });
+        const device = props.rdx_devices.filter(d => d.id === id)[0]
+        console.log('[SENSOR]-id', id, device);
+        setsensor(device)
+        setalias(device.alias)
+        setsensorimage(device.type.concat('.png'))
+        setconnectimage(device.connect.concat('.png')) 
+        setcapabilities(device.sensor)
+        setloaded(true)
     },[id])
-
-    useEffect(() => {
-        console.log('[SENSOR]-sensor', sensor, SENSORS);
-        setalias(sensor.device.alias)
-        setsensorimage(sensor.device.type.concat('.png'))
-        setconnectimage(sensor.device.connect.concat('.png'))
-
-        
-    }, [sensor])
-
 
     const handleChange = (event) => {
         console.log(event.target.value);
@@ -103,21 +90,9 @@ const Sensor = (props) => {
     }
 
     const handleSave = () => {
-        console.log('Update ->', sensor.device)
-        axios
-          .put("/update?Id=" + sensor.device.id, {
-            isNew: false,
-            id: sensor.device.id,
-            alias: alias,
-            connect: sensor.device.connect,
-            type: sensor.device.type
-          })
-          .then(function(response) {
-            console.log(response);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+        sensor.capabilities = capabilities;
+        console.log('Update ->', sensor, alias)
+        props.onDeviceUpdate(sensor, alias)
         history.goBack()
     }
 
@@ -125,32 +100,43 @@ const Sensor = (props) => {
         history.goBack()
     }
 
+    const capabilityChangeHandler = (event) => {
+        console.log('[CAPABILITIES]',event.target.name, event.target.checked);
+        setcapabilities({...capabilities, [event.target.name]: event.target.checked})
+    }
 
     return (
 
         <React.Fragment>
-            {sensor.loaded ?
+            {loaded ?
             <div>
             <Box className={classes.root}>
                 <Grid container >
                     <Grid item xs={12}>
-                        <Grid container   direction="row" justify="stretch" alignItems="center">
+                        <Grid container   direction="row" justify="center" alignItems="center">
                             <Grid  className={classes.grid} item xs={4} >
-                                <Typography variant='h6'> {sensor.device.type} </Typography>
-                                <img className={classes.sensortype} src={sensorimage} alt={sensor.device.type} />
+                                <Typography variant='h6'> {sensor.type} </Typography>
+                                <img className={classes.sensortype} src={sensorimage} alt={sensor.type} />
                             </Grid>
                             <Grid className={classes.grid} item xs={4} >
                                 <Typography variant='body1'> {id} </Typography>
-                                <img className={classes.sensorconnect} src={connectimage} alt={sensor.device.connect} />
+                                <img className={classes.sensorconnect} src={connectimage} alt={sensor.connect} />
                             </Grid>
                             <Grid className={classes.grid} item xs={4} >
                                 <FormControl>
-                                <InputLabel htmlFor={sensor.device.id}>Alias</InputLabel>
-                                <OutlinedInput id={sensor.device.id} value={alias || ''} onChange={handleChange} />
+                                <InputLabel htmlFor={sensor.id}>Alias</InputLabel>
+                                <OutlinedInput id={sensor.id} value={alias || ''} onChange={handleChange} />
                                 <FormHelperText id="my-helper-text">Donnez un nom à ce capteur</FormHelperText>
                                 </FormControl>
                                 <FormGroup className={classes.capabilities}>
-                                    <SensorCapabilities sensor={sensor.device}/>
+                                    {
+                                       (typeof(capabilities) !== 'undefined')
+                                            ? (<SensorCapabilities 
+                                                sensor={sensor} 
+                                                capabilities={capabilities}
+                                                changeCapabilities={capabilityChangeHandler}/>)
+                                            : null 
+                                    }
                                 </FormGroup>
 
                             </Grid>
@@ -181,5 +167,20 @@ const Sensor = (props) => {
     )
 }
 
-//export default withRouter(Sensor)
-export default Sensor
+
+
+const mapStateToProps = (state) => {
+    return {
+        rdx_devices: state.generic.devices,
+    }
+  }
+  
+  const MapDispatchToProps = dispatch => {
+    return {
+        onDeviceUpdate: (device, alias) => dispatch(actions.updateDevice(device, alias)),
+        onDeviceLoad: (device) => dispatch(actions.loadDevice(device))
+    }
+  
+  }
+  
+  export default connect(mapStateToProps, MapDispatchToProps)(Sensor);

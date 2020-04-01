@@ -1,16 +1,27 @@
 import React, {useState, useEffect} from 'react'
+import { connect } from 'react-redux';
 
+import DeviceLayout from '../DeviceLayout';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 
 import Header from './Header';
 import TempChart from './Temp/TempChart';
+import TempRDXChart from './Temp/TempRDXChart';
 import TempMetrics from './Temp/TempMetrics';
+import TempRDXMetrics from './Temp/TempRDXMetrics';
 import HumChart from './Humidity/HumChart';
+import HumRDXChart from './Humidity/HumRDXChart'
 import HumMetrics from './Humidity/HumMetrics';
+import HumRDXMetrics from './Humidity/HumRDXMetrics';
+
+import PresRDXChart from './Pressure/PresRDXChart'
+import PresRDXMetrics from './Pressure/PresRDXMetrics';
 
 import moment from 'moment';
+import * as _ from 'lodash';
 
+import * as actions from '../../redux/actions/index'
 import { makeStyles } from '@material-ui/core/styles';
 
 moment.locale('fr')
@@ -42,7 +53,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.background.paper,
         borderRadius: theme.spacing(1),
       },
-  }),'MainLayout');
+  }),{name:'MainLayout'});
 
 const MainLayout = (props) => {
 
@@ -60,6 +71,8 @@ const MainLayout = (props) => {
         },
 )
 
+    const [metricsESP32, setmetricsESP32] = useState()
+    const [RDXhistory, setRDXhistory] = useState([])
     const [history, sethistory] = useState([
       {metrics:{
         temp: 20,
@@ -79,6 +92,7 @@ const MainLayout = (props) => {
     })
     const [sensor, setsensor] = useState({})
     const [hasData, sethasData] = useState(false)
+    const [hasESP32Data, sethasESP32Data] = useState(false)
     const [heartPulse, setheartPulse] = useState(false)
 
 
@@ -98,6 +112,29 @@ const MainLayout = (props) => {
       sethasData(true);
       setminmax(getMinMaxValues(props.history));
     }, [props.history])
+
+    useEffect(() => {
+      console.log('[MAINLAYOUT]>ReduxMetric', props.rdx_lastESP32Metrics)
+      if (!_.isEmpty(props.rdx_lastESP32Metrics)) {
+      setmetricsESP32({
+        temperature: Math.round(props.rdx_lastESP32Metrics.values.temperature*10) /10,
+        humidity: Math.round(props.rdx_lastESP32Metrics.values.humidity*10) /10,
+        pressure: Math.round(props.rdx_lastESP32Metrics.values.pressure /10) / 10,
+        moment: props.rdx_lastESP32Metrics.values.moment
+      })
+      sethasESP32Data(true)
+    }
+    }, [props.rdx_lastESP32Metrics])
+
+    useEffect(() => {
+      console.log('[MAINLAYOUT]>ReduxMetricHistory', props.rdx_history)    
+
+      }, [props.rdx_history])  
+
+      useEffect(() => {
+        console.log('[MAINLAYOUT]>ReduxDevices', props.devices)    
+//
+        }, [props.devices])  
 
     const updateMinMaxValues = (metric) => {
 //        console.log('[MINMAX]', metric, metric.metrics.temp, metric.metrics.hum, minmax)
@@ -123,7 +160,7 @@ const MainLayout = (props) => {
     }
 
     const switchSettings = (value) => {
-      console.log('Seetings : ', value);
+      console.log('Settings : ', value);
     }
 
 //============================================================
@@ -149,7 +186,28 @@ const MainLayout = (props) => {
                 <HumMetrics values={metricsData} minmax= {minmax} hasData={hasData}/>              
                 <HumChart history={history} value={metricsData} hasData={hasData}/>
               </Grid>
+
+              {/* <Grid className={classes.grid} item sm={12}>
+                <TempRDXMetrics values={metricsESP32} hasData={hasESP32Data}/>              
+                <TempRDXChart history={props.rdx_history} value={metricsESP32} hasData={hasESP32Data}/>
               </Grid>
+
+              <Grid className={classes.grid} item sm={12}>
+                <HumRDXMetrics values={metricsESP32} hasData={hasESP32Data}/>              
+                <HumRDXChart history={props.rdx_history} value={metricsESP32} hasData={hasESP32Data}/>
+              </Grid>
+
+              <Grid className={classes.grid} item sm={12}>
+                <PresRDXMetrics values={metricsESP32} hasData={hasESP32Data}/>              
+                <PresRDXChart history={props.rdx_history} value={metricsESP32} hasData={hasESP32Data}/>
+              </Grid> */}
+              </Grid>
+            {
+              props.rdx_devices.map((d,index) => (
+                <DeviceLayout className={classes.root} key={index} device={d} hasData={props.rdx_hasESP32Metric}/>                
+              ))
+            }
+
 
 
           </Box>
@@ -158,4 +216,23 @@ const MainLayout = (props) => {
     );
 }
 
-export default MainLayout
+const mapStateToProps = (state) => {
+  console.log('MapToState:', state)
+  return {
+      rdx_lastESP32Metrics : state.generic.lastESP32Metric,
+      rdx_lastNanoMetrics: state.generic.lastNanoMetric,
+      rdx_devices: state.generic.devices,
+      rdx_history: state.generic.history,
+      rdx_hasESP32Metric: state.generic.hasESP32Metric,
+      rdx_hasNanoMetric: state.generic.hasNanoMetric,
+  }
+}
+
+const MapDispatchToProps = dispatch => {
+  return {
+    onDeviceLoad: (device) => dispatch(actions.loadDevice(device))
+  }
+
+}
+
+export default connect(mapStateToProps, MapDispatchToProps)(MainLayout);

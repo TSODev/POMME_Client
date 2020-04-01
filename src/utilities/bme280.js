@@ -4,6 +4,9 @@ const BME280 = {
     temperature: true,
     humidity: true,
     pressure: true,
+    can_temperature: true,
+    can_humidity: true,
+    can_pressure: true,
 }
 
 export default BME280

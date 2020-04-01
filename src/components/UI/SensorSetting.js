@@ -1,7 +1,10 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import {connect} from 'react-redux';
 import { MemoryRouter as Router } from 'react-router';
 
-import { withRouter } from 'react-router-dom';
+import {useLocation, useHistory} from 'react-router-dom';
+
+//import { withRouter } from 'react-router-dom';
 
 import IconButton from '@material-ui/core/IconButton';
 import SettingsInputComponentIcon from '@material-ui/icons/SettingsInputComponent';
@@ -55,6 +58,13 @@ const SensorSetting = (props) => {
 
     const [open, setOpen] = useState(false);
 
+//    let location = useLocation();
+    let history = useHistory();
+
+    useEffect(() => {
+      console.log('[SETTINGS]', props.rdx_devices)
+    }, [props.rdx_devices])
+
     const toggleDrawer = (open) => event => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
           return;
@@ -77,7 +87,7 @@ const SensorSetting = (props) => {
     const sensorSelectedHandler = (id) => {
 
         toggleDrawer(false);
-        props.history.push({pathname: '/sensor?' + id})
+        history.push({pathname: '/sensor?' + id})
     }
     
       const list = anchor => (
@@ -102,11 +112,11 @@ const SensorSetting = (props) => {
                 className={classes.root}
           >
 
-            {props.devices.map((device, index) => (
+            {props.rdx_devices.map((device, index) => (
 
                 <ListItem button key={device.id} onClick={(value) => sensorSelectedHandler(device.id)} >
                     <ListItemIcon>{device.connect === 'serial' ? <BadgedCompareArrowsIcon /> : <BadgedContactlessIcon />}</ListItemIcon>
-                    <ListItemText primary={device.id} />
+                    <ListItemText primary={device.alias || device.id} />
                 </ListItem>
 
 
@@ -132,5 +142,17 @@ const SensorSetting = (props) => {
         </div>
     )
 }
+const mapStateToProps = (state) => {
+  return {
+    rdx_devices: state.generic.devices
+  }
+}
 
-export default withRouter(SensorSetting)
+const MapDispatchToProps = dispatch => {
+  return {
+  }
+
+}
+
+export default connect(mapStateToProps, MapDispatchToProps)(SensorSetting);
+//export default withRouter(SensorSetting)

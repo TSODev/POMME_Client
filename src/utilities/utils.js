@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+//import * as _ from 'lodash';
 
 export const updateObject = (oldObject, updatedProperties) => {
     return {
@@ -17,6 +17,14 @@ export const fullname = (firstname, lastname) => {
     return first.concat(' ').concat(last)
     }
 
+export const getMinMaxValues = (history, capability) => {     
+        const arr = [];
+        history.map(h => arr.push(JSON.parse(h).metrics[capability]));
+        return ({ 
+          min: Math.min( ...arr ), 
+          max: Math.max( ...arr ),
+        });
+      }
 
 export const buildAxiosErrorMessage= (error) => {
     let message = error.message;

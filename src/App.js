@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import socket from './utilities/socketConnection';
@@ -8,6 +9,9 @@ import axios from './axios';
 
 import MainComponent from './components/MainComponent';
 import Sensor from './components/UI/Sensor';
+import SENSORS from './utilities/sensors';
+
+import * as actions from './redux/actions/index'
 
 const RABBIT = 'rabbitmq';
 const SERIAL = 'serial';
@@ -35,24 +39,25 @@ class App extends Component {
                 },
               moment: moment().format(''),
                },
-        esp32metric: {
-              values: {
-                  temp: 20,
-                  hum: 30,
-                  pres: 0,
-                },
-              moment: moment().format(''),
-                },
+        esp32metric: {},
       history: [],
       sensor: {},
       devices: [],
     };
     
     signalDevice = (id, type, connectedBy) => {
-      const theDevice = this.state.devices.filter(d => d.id === id);
+//      const theDevice = this.state.devices.filter(d => d.id === id);
+      const theDevice = this.props.rdx_devices.filter(d => d.id === id);
+
       if (theDevice.length === 0) {
-//        console.log('[APP] new device : ', id);
+
         const newDevice = {"isNew": true, "id": id, "alias":'', "connect": connectedBy, "type": type };
+        console.log('[APP] new device : ', id, type, SENSORS);
+        const sensor = SENSORS.models.filter(s => s.id === type)[0];
+        console.log('[APP] new device : ', id, type, sensor);
+        newDevice.sensor = SENSORS.models.filter(s => s.id === type)[0]
+
+        this.props.onNewDevice(newDevice);
 //        const devices = [...this.state.devices];
 
         axios.post('/add', JSON.stringify(newDevice))
@@ -74,7 +79,8 @@ class App extends Component {
     socket.on('metric',(data) => {
       const values = data.mesure;
       console.log('[APP] Socket :', values);
-      this.signalDevice('Serial_1', DHT22, SERIAL)
+      this.signalDevice('mset0', DHT22, SERIAL)
+      this.props.onNewNanoMetric(data.mesure)
       this.setState({metric: {values}})
       this.setState({hasData: true})
         })
@@ -82,6 +88,7 @@ class App extends Component {
     socket.on('esp32metric', (data) => {
       console.log('[APP] esp32metric :', data.mesure);
       this.signalDevice(data.mesure.device, BME280, RABBIT)
+      this.props.onNewESP32Metric(data.mesure)
       this.setState({esp32metric: data.mesure})
     })
 
@@ -94,6 +101,12 @@ class App extends Component {
       this.setState({history: data.history});
     })
 
+    socket.on('historicDataByDevice',(data) => {
+      console.log('[APP] History :', data.device, data.history);
+      this.props.onNewHistoryForAllDevices(data);
+//      this.setState({history: data.history});
+    })
+
     socket.on('endHistoricData',(data) => {
       console.log('[APP] History End :', data);
       })
@@ -101,12 +114,18 @@ class App extends Component {
     socket.on('sensorInfo',(data) => {
       console.log('[APP] sensor :', data);
       this.setState({sensor: data})
-      })   
+      })  
+      
+    socket.on('roomWelcome', (message) => {
+      console.log('[APP] socket :', message);
+    })
       
 
       axios.get('/sensors')
           .then ( response => {
             this.setState({devices: response.data})
+            this.state.devices.map(d => this.props.onNewDevice(d))
+            console.log('[GETDEVICES]', response.data, this.props.rdx_devices)
           })
           .catch ( err  => {
             console.log(err)
@@ -142,4 +161,20 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    rdx_devices: state.generic.devices
+  }
+}
+
+const MapDispatchToProps = dispatch => {
+  return {
+    onNewDevice: (data) => dispatch(actions.addDevice(data)),
+    onNewESP32Metric: (data) => dispatch(actions.getESPNewMetric(data)),
+    onNewNanoMetric: (data) => dispatch(actions.getNanoNewMetric(data)),
+    onNewHistoryForAllDevices: (data) => dispatch(actions.getHistoryByDevice(data))
+  }
+
+}
+
+export default connect(mapStateToProps, MapDispatchToProps)(App);

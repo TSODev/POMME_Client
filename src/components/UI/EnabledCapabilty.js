@@ -1,0 +1,179 @@
+import React, {useEffect, useState} from 'react'
+import { connect } from 'react-redux';
+//import Widget from './Widget'
+
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid'
+
+import TempMetrics from './Temp/TempMetrics';
+import TempChart from './Temp/TempChart';
+import TempRDXMetrics from './Temp/TempRDXMetrics';
+import TempRDXChart from './Temp/TempRDXChart';
+import HumRDXMetrics from './Humidity/HumRDXMetrics';
+import HumRDXChart from './Humidity/HumRDXChart';
+import PresRDXMetrics from './Pressure/PresRDXMetrics';
+import PresRDXChart from './Pressure/PresRDXChart';
+
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        width: '100%',
+        height: '100%',
+        minHeigth: '100vh',
+        backgroundColor: theme.palette.background.paper,
+        borderRadius: theme.spacing(1),
+        textAlign: 'center',
+      },
+    mesures: {
+        width: '100%',
+        backgroundColor: theme.palette.background.paper,
+    },
+    grid: {
+        width: '100%',
+        border: 'none',
+        borderWidth: 1,
+        padding: theme.spacing(1),
+        marginBottom: theme.spacing(2),
+        borderRadius: theme.spacing(1),
+        backgroundColor: theme.palette.background.paper,
+    },
+    chart: {
+        width: '100%',
+        backgroundColor: theme.palette.background.paper,
+        borderRadius: theme.spacing(1),
+      },
+  }),{name:'EnablesCapability'});
+
+const EnabledCapability = (props) => {
+
+    const classes = useStyles();
+
+    const [metrics, setmetrics] = useState()
+    const [history, sethistory] = useState([])
+
+    useEffect(() => {
+        console.log('[DEVICELAYOUT]-[CAPABILITY]', props.capability)
+
+
+    }, [props.capability])
+
+    useEffect(() => {
+        console.log('[DEVICELAYOUT]-[CAPABILITY]', props.device, props.hasData)
+        const deviceHistory = props.rdx_history.filter(h => h.device === props.device.id)
+        sethistory(deviceHistory)
+//        setmetrics(props.lastESP32Metric)
+
+    }, [props.device, props.hasData])
+
+    const TempWidget = (props) => {
+        return(
+            <React.Fragment>
+                {
+                    (props.hasData) ?
+                <Box className={classes.root}>
+
+                    <Grid className={classes.grid} item sm={12}>
+
+
+                            <div>
+                                <TempRDXMetrics values={props.rdx_lastESP32Metrics.values} hasData={props.hasData}/>              
+                                <TempRDXChart history={props.rdx_history} value={props.rdx_lastESP32Metrics.values} hasData={props.hasData}/>
+                            </div>
+
+
+                    </Grid>
+                </Box>
+                    :
+                    <Box className={classes.root}>No Data</Box>
+                    }
+            </React.Fragment>
+        )
+    }
+    const HumWidget = (props) => {
+        return(
+            <React.Fragment>
+                {
+                    (props.hasData) ?
+                <Box className={classes.root}>
+
+                    <Grid className={classes.grid} item sm={12}>
+
+
+                            <div>
+                                <HumRDXMetrics values={props.rdx_lastESP32Metrics.values} hasData={props.hasData}/>              
+                                <HumRDXChart history={props.rdx_history} value={props.rdx_lastESP32Metrics.values} hasData={props.hasData}/>
+                            </div>
+
+
+                    </Grid>
+                </Box>
+                    :
+                    <Box className={classes.root}>No Data</Box>
+                    }
+            </React.Fragment>
+        )
+    }
+    const PresWidget = (props) => {
+        return(
+            <React.Fragment>
+                {
+                    (props.hasData) ?
+                <Box className={classes.root}>
+
+                    <Grid className={classes.grid} item sm={12}>
+
+
+                            <div>
+                                <PresRDXMetrics values={props.rdx_lastESP32Metrics.values} hasData={props.hasData}/>              
+                                <PresRDXChart history={props.rdx_history} value={props.rdx_lastESP32Metrics.values} hasData={props.hasData}/>
+                            </div>
+
+
+                    </Grid>
+                </Box>
+                    :
+                    <Box className={classes.root}>No Data</Box>
+                    }
+            </React.Fragment>
+        )
+    }
+
+
+        return    (
+            <Box className={classes.root}>
+                <Grid className={classes.mesures} container justify="space-around" alignitem="center" spacing={1}>
+                    {(props.capability.value) ?
+                    <div className={classes.root}>
+                    {
+                        (props.capability.name === 'temperature' ? TempWidget(props) :
+                        (props.capability.name === 'humidity' ? HumWidget(props) :
+                        (props.capability.name === 'pressure' ? PresWidget(props) :
+                        null)))
+                    }
+                    </div>
+                    : null}
+                </Grid>
+            </Box>
+            )
+
+}
+
+const mapStateToProps = (state) => {
+    console.log('MapToState:', state)
+    return {
+        rdx_lastESP32Metrics : state.generic.lastESP32Metric,
+        rdx_lastNanoMetrics: state.generic.lastNanoMetric,
+        rdx_devices: state.generic.devices,
+        rdx_history: state.generic.history,
+    }
+  }
+  
+  const MapDispatchToProps = dispatch => {
+    return {
+  
+    }
+  
+  }
+  
+  export default connect(mapStateToProps, MapDispatchToProps)(EnabledCapability);

@@ -7,11 +7,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 
 const SensorCapabilities = (props) => {
 
-    const [capabilities, setcapabilities] = useState({})
-    useEffect(() => {
-        console.log('[CAPABILITIES]', props.sensor.type)
-        setcapabilities(SENSORS.models.filter(s => s.id === props.sensor.type)[0])
-    },[props.sensor.type])
+    // useEffect(() => {
+    //     console.log('[CAPABILITIES]', props.capabilities)
+
+    // }, [props.capabilities])
+
 
     return (
 
@@ -21,10 +21,11 @@ const SensorCapabilities = (props) => {
 
                     <FormControlLabel control={
                     <Switch
-                        checked={capabilities[c] || false}
-                        disabled={!capabilities[c]}
+                        checked={props.capabilities[c] || false}
+                        disabled={!props.capabilities['can_' + c]}
                         name={c}
                         color="primary"
+                        onChange={props.changeCapabilities}
                     />
                     }
                     label={c}
