@@ -3,8 +3,8 @@ import React, {useEffect} from 'react'
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Chart from '../Chart';
-import RDXChart from '../RDXChart';
+
+import RDXChart from '../Charts/RDXChart';
 
 const chartHeight = 250
 const useStyles = makeStyles(theme => ({

@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react'
 import { connect } from 'react-redux';
-//import Widget from './Widget'
 
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid'
 
-import TempMetrics from './Temp/TempMetrics';
-import TempChart from './Temp/TempChart';
-
-import HumMetrics from './Humidity/HumMetrics';
-import HumChart from './Humidity/HumChart';
+import TempRDXMetrics from './Temp/TempRDXMetrics';
+import TempRDXChart from './Temp/TempRDXChart';
+import HumRDXMetrics from './Humidity/HumRDXMetrics';
+import HumRDXChart from './Humidity/HumRDXChart';
+import PresRDXMetrics from './Pressure/PresRDXMetrics';
+import PresRDXChart from './Pressure/PresRDXChart';
 
 import SyncLoader from 'react-spinners/SyncLoader';
 
@@ -51,34 +51,34 @@ const EnabledCapability = (props) => {
     const [metrics, setmetrics] = useState()
     const [history, sethistory] = useState([])
 
-    // useEffect(() => {
-    //     console.log('[DEVICELAYOUT]-[CAPABILITY]', props.capability)
+    useEffect(() => {
+        console.log('[DEVICELAYOUT]-[RDXCAPABILITY]', props.capability)
 
 
-    // }, [props.capability])
+    }, [props.capability])
 
     useEffect(() => {
-        console.log('[DEVICELAYOUT]-[CAPABILITY]', props.device, props.hasData)
+        console.log('[DEVICELAYOUT]-[RDXCAPABILITY]', props.device, props.rdx_hasESP32Metric)
         const deviceHistory = props.rdx_history.filter(h => h.device === props.device.id)
         sethistory(deviceHistory)
 //        setmetrics(props.lastESP32Metric)
 
-    }, [props.device, props.hasData])
+    }, [props.device, props.rdx_hasESP32Metric])
 
     const TempWidget = (props) => {
         return(
             <React.Fragment>
                 {
-                    (props.rdx_hasNanoMetric) ?
+                    (props.rdx_hasESP32Metric) ?
                 <Box className={classes.root}>
 
                     <Grid className={classes.grid} item sm={12}>
 
 
-
-                                <TempMetrics values={props.rdx_lastNanoMetrics.values} hasData={props.rdx_hasNanoMetric}/>              
-                                <TempChart history={props.rdx_history} device={props.device} value={props.rdx_lastNanoMetrics.values} hasData={props.rdx_hasNanoMetric}/>
-
+                            <div>
+                                <TempRDXMetrics values={props.rdx_lastESP32Metrics.values} hasData={props.rdx_hasESP32Metric}/>              
+                                <TempRDXChart history={props.rdx_history} device={props.devices} value={props.rdx_lastESP32Metrics.values} hasData={props.rdx_hasESP32Metric}/>
+                            </div>
 
 
                     </Grid>
@@ -97,16 +97,16 @@ const EnabledCapability = (props) => {
         return(
             <React.Fragment>
                 {
-                    (props.rdx_hasNanoMetric) ?
+                    (props.rdx_hasESP32Metric) ?
                 <Box className={classes.root}>
 
                     <Grid className={classes.grid} item sm={12}>
 
 
-
-                                <HumMetrics values={props.rdx_lastNanoMetrics.values} hasData={props.rdx_hasNanoMetric}/>              
-                                <HumChart history={props.rdx_history} device={props.device} value={props.rdx_lastNanoMetrics.values} hasData={props.rdx_hasNanoMetric}/>
-
+                            <div>
+                                <HumRDXMetrics values={props.rdx_lastESP32Metrics.values} hasData={props.rdx_hasESP32Metric}/>              
+                                <HumRDXChart history={props.rdx_history} value={props.rdx_lastESP32Metrics.values} hasData={props.rdx_hasESP32Metric}/>
+                            </div>
 
 
                     </Grid>
@@ -124,24 +124,28 @@ const EnabledCapability = (props) => {
     const PresWidget = (props) => {
         return(
             <React.Fragment>
-                {/* {
-                    (props.rdx_hasNanoMetric) ?
+                {
+                    (props.rdx_hasESP32Metric) ?
                 <Box className={classes.root}>
 
                     <Grid className={classes.grid} item sm={12}>
 
 
                             <div>
-                                <PresRDXMetrics values={props.rdx_lastESP32Metrics.values} hasData={props.rdx_hasNanoMetric}/>              
-                                <PresRDXChart history={props.rdx_history} value={props.rdx_lastESP32Metrics.values} hasData={props.rdx_hasNanoMetric}/>
+                                <PresRDXMetrics values={props.rdx_lastESP32Metrics.values} hasData={props.rdx_hasESP32Metric}/>              
+                                <PresRDXChart history={props.rdx_history} value={props.rdx_lastESP32Metrics.values} hasData={props.rdx_hasESP32Metric}/>
                             </div>
 
 
                     </Grid>
                 </Box>
                     :
-                    <Box className={classes.root}>No Data</Box>
-                    } */}
+                    <SyncLoader 
+                        color='#ef702b'
+                        size={10}
+                        margin={5}
+                    />
+                    }
             </React.Fragment>
         )
     }
@@ -156,9 +160,7 @@ const EnabledCapability = (props) => {
                         (props.capability.name === 'temperature' ? TempWidget(props) :
                         (props.capability.name === 'humidity' ? HumWidget(props) :
                         (props.capability.name === 'pressure' ? PresWidget(props) :
-                        null)
-                        )
-                        )
+                        null)))
                     }
                     </div>
                     : null}
@@ -175,7 +177,7 @@ const mapStateToProps = (state) => {
         rdx_lastNanoMetrics: state.generic.lastNanoMetric,
         rdx_devices: state.generic.devices,
         rdx_history: state.generic.history,
-        rdx_hasNanoMetric: state.generic.hasNanoMetric
+        rdx_hasESP32Metric: state.generic.hasESP32Metric,
     }
   }
   

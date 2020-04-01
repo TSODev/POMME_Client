@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 
-import Metric from '../metric';
+import Metric from '../Metric';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import SVGTempIcon from '../SVGIcons/SVGTempIcon';
@@ -12,8 +12,9 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(1),
         backgroundColor: theme.palette.background.paper,
         borderRadius: theme.spacing(1),
+//        paddingBottom: theme.spacing(2)
       },
-  }),'TempMetrics');
+  }),{name: 'TempMetrics'});
 
 const TempMetrics = (props) => {
 
@@ -21,7 +22,7 @@ const TempMetrics = (props) => {
 
     useEffect(() => {
         console.log('[TEMPMETRICS]')
-    }, [props.values.metrics.temp])
+    }, [props.values.temp])
 
     return (
         <React.Fragment>
@@ -39,7 +40,7 @@ const TempMetrics = (props) => {
           <Grid item xs={8} sm={8}>
               <SVGTempIcon />
             <Metric
-              value={ props.hasData ? props.values.metrics.temp : '--.-'}
+              value={ props.hasData ? props.values.temp : '--.-'}
               unit="°C"
               variantlabel="h5"
               variantvalue="h3"

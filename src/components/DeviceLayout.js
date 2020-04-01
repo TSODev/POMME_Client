@@ -3,9 +3,12 @@ import React, {useState, useEffect} from 'react';
 import SENSORS from '../utilities/sensors';
 
 import EnabledCapability from './UI/EnabledCapabilty';
+import EnabledRDXCapability from './UI/EnabledRDXCapabilty';
 
 import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
+import Grid from '@material-ui/core/Grid'
+import SVGSensorIcon from './UI/SVGIcons/SVGSensorIcon';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -17,7 +20,18 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.background.paper,
         borderRadius: theme.spacing(1),
         textAlign: 'left',
+        margin: theme.spacing(0),
+        padding: theme.spacing(0),
       },
+      title: {
+          color: '#FFF',
+          backgroundColor: theme.palette.background.secondary,
+          borderRadius: theme.spacing(4),
+          paddingTop:  theme.spacing(1),
+          textAlign: 'center',
+          height:  theme.spacing(7),
+          margin:  theme.spacing(1,1,1,1)
+      }
   }),{name:'DeviceLayout'});
 
 
@@ -51,18 +65,44 @@ const DeviceLayout = (props) => {
             {(props.device.connect === 'rabbitmq') ?
                 <div className={classes.root}>
                     <Divider variant='fullWidth' />
+                    <Grid container>
+
+                    <Grid className={classes.title} item sm={4}>
                     <Typography variant='h4'>
                         {props.device.alias || props.device.id}
                     </Typography>
+                    </Grid>
 
                     {
                         (typeof(selected) !== 'undefined') ?
                         selected.map((c,index) => 
-                            <EnabledCapability className={classes.root} key={index} device={props.device} capability={c} hasData={props.hasData} />) : null
+                            <EnabledRDXCapability className={classes.root} key={index} device={props.device} capability={c} />) : null
                     }
+                    </Grid>
                 </div>
             :
-            null
+            <div>
+                {(props.device.connect === 'serial') ?
+                <div className={classes.root}>
+                    <Divider variant='fullWidth' />
+                    <Grid container>
+                    <Grid className={classes.title} item sm={4}>
+                    <Typography variant='h4'>
+                        {props.device.alias || props.device.id}
+                    </Typography>
+                    </Grid>
+
+                    {
+                        (typeof(selected) !== 'undefined') ?
+                        selected.map((c,index) => 
+                            <EnabledCapability className={classes.root} key={index} device={props.device} capability={c} />) : null
+                    }
+                    </Grid>
+                </div>
+                :
+                <p>Unknow sensor connector</p>
+                }
+            </div>
            } 
 
 

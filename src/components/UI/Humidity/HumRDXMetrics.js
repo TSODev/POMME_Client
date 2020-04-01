@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 
-import Metric from '../metric';
+import Metric from '../Metric';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import SVGHumIcon from '../SVGIcons/SVGHumIcon';
@@ -32,13 +32,13 @@ const HumRDXMetrics = (props) => {
         <div className={classes.metrics}>
         <Grid container alignItems="center" spacing={1}>
           <Grid className={classes.grid} item xs={2}>
-            <Metric
+            {/* <Metric
               value={10}
               unit="%"
               variantlabel="body2"
               variantvalue="body1"
               label="Min"
-            />
+            /> */}
           </Grid>
           <Grid className={classes.grid} item xs={8}>
             <SVGHumIcon />
@@ -52,13 +52,13 @@ const HumRDXMetrics = (props) => {
             />
           </Grid>
           <Grid className={classes.grid} item xs={2}>
-            <Metric
+            {/* <Metric
               value={50}
               unit="%"
               variantlabel="body2"
               variantvalue="body1"
               label="Max"
-            />
+            /> */}
           </Grid>
         </Grid>
         </div>

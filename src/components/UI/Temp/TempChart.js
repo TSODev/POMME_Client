@@ -3,7 +3,8 @@ import React, {useEffect} from 'react'
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Chart from '../Chart';
+import Chart from '../Charts/Chart';
+
 
 const chartHeight = 250
 const useStyles = makeStyles(theme => ({
@@ -12,16 +13,16 @@ const useStyles = makeStyles(theme => ({
       height: chartHeight,
       backgroundColor: theme.palette.background.paper,
       borderRadius: theme.spacing(1),
-
+//      paddingTop: theme.spacing(2),
     },
-}), 'TempChart');
+}), {name: 'TempChart'});
 
 const TempChart = (props) => {
 
   const classes = useStyles();
 
     useEffect(() => {
-        console.log('[TEMPCHART]')
+        console.log('[TEMPCHART]',props.device.id, props.history, props.hasData)
     }, [props.value])
 
     if (props.hasData) {
@@ -31,10 +32,11 @@ const TempChart = (props) => {
             <Grid item xs={12}>
                 <Chart
                   history={props.history}
-                  metric="metrics.temp"
+                  metric="temp"
                   min="tmin"
                   max="tmax"
                   value={props.value}
+                  device={props.device.id}
                 />
             </Grid>
             </Grid>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-import MainLayout from '../components/UI/MainLayout';
+import MainLayout from '../components/UI/Main/MainLayout';
 import SyncLoader from 'react-spinners/SyncLoader';
 
 import Box from '@material-ui/core/Box';

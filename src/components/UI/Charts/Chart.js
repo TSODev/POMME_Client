@@ -21,7 +21,7 @@ const chartHeight = 250
 //       },
 //   }));
 
-const RDXChart = (props) => {
+const Chart = (props) => {
 
 //    const classes = useStyles();
 
@@ -29,36 +29,46 @@ const RDXChart = (props) => {
 
 
     useEffect(() => {
+//        console.log('[CHART]', props.metric);
         setMetricsData(MetricData => [...MetricsData, props.value]);
-        console.log('[RDXCHART]-MetricsData', props.metric, props.value, MetricsData);
     },[props.value])
 
+//     useEffect(() => {
+//       console.log('[CHART]', moment(props.value.moment,'x').format());
+//       settime(time => [...time, moment(props.value.moment,'x').format()])
+// //      console.log(time)
+//   },[props.value.moment])
 
     useEffect(() => {
-      console.log('[RDXChart]-History', props.history)
+      console.log('[Chart]-History', props.device, props.history)
       const hdevice = props.history.filter(d => d.device === props.device)
       // const h = props.history[props.device];
       const hist = [];
       if (hdevice.length > 0){
-//        console.log('[RDXChart]-History for Device',hdevice, hdevice[0], hdevice[0].values)
+        console.log('[Chart]-History for Device',hdevice, hdevice[0], hdevice[0].values)
         const deviceHistory = hdevice[0].values;
-//        console.log('[RDXChart]-deviceHistory',deviceHistory)
+        console.log('[Chart]-deviceHistory',deviceHistory)
         if (deviceHistory.length >0) {
           deviceHistory[0].map( element => {
-//            console.log('[RDXChart]-element',JSON.parse(element))
+            console.log('[Chart]-element',JSON.parse(element))
             const el = JSON.parse(element)
             hist.push({
-              temperature: el.temperature,
-              humidity: el.humidity,
-              pressure: el.pressure / 100,
+              temp: el.metrics.temp,
+              hum: el.metrics.hum,
+//              pressure: el.pressure / 100,
               moment: el.moment
             })
           })
         }
-//        console.log('[RDXChart]-Saved',hist)
+      // const h = props.history;
+      // const hist = [];
+      // if (h.length > 0){
+      //   h.map( element => {
+      //     hist.push(JSON.parse(element))
+      //   })
         setMetricsData(hist);
       }
-  }, [props.history, props.device])
+  }, [props.history])
 
   const formatXAxis = (tickItem) => {
       var x = moment(tickItem,'x');
@@ -112,4 +122,4 @@ const RDXChart = (props) => {
     );
 }
 
-export default RDXChart
+export default Chart

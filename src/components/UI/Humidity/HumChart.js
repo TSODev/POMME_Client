@@ -3,7 +3,8 @@ import React, {useEffect} from 'react'
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Chart from '../Chart';
+import Chart from '../Charts/Chart';
+import RDXChart from '../Charts/RDXChart';
 
 const chartHeight = 250
 const useStyles = makeStyles(theme => ({
@@ -12,8 +13,9 @@ const useStyles = makeStyles(theme => ({
       height: chartHeight,
       backgroundColor: theme.palette.background.paper,
       borderRadius: theme.spacing(1),
+//      paddingTop: theme.spacing(2)
     },
-}),'HumChart');
+}),{name:'HumChart'});
 
 const HumChart = (props) => {
 
@@ -30,10 +32,11 @@ const HumChart = (props) => {
             <Grid item xs={12}>
                 <Chart
                   history={props.history}
-                  metric="metrics.hum"
+                  metric="hum"
                   min="hmin"
                   max="hmax"
                   value={props.value}
+                  device={props.device.id}
                 />
             </Grid>
             </Grid>
