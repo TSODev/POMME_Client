@@ -51,11 +51,11 @@ const EnabledCapability = (props) => {
     const [metrics, setmetrics] = useState()
     const [history, sethistory] = useState([])
 
-    useEffect(() => {
-        console.log('[DEVICELAYOUT]-[RDXCAPABILITY]', props.capability)
+    // useEffect(() => {
+    //     console.log('[RDXCAPABILITY]', props.capability)
 
 
-    }, [props.capability])
+    // }, [props.capability])
 
     useEffect(() => {
         console.log('[DEVICELAYOUT]-[RDXCAPABILITY]', props.device, props.rdx_hasESP32Metric)
@@ -76,8 +76,19 @@ const EnabledCapability = (props) => {
 
 
                             <div>
-                                <TempRDXMetrics values={props.rdx_lastESP32Metrics.values} hasData={props.rdx_hasESP32Metric}/>              
-                                <TempRDXChart history={props.rdx_history} device={props.devices} value={props.rdx_lastESP32Metrics.values} hasData={props.rdx_hasESP32Metric}/>
+                                <TempRDXMetrics 
+                                        values={props.rdx_lastESP32Metrics.values} 
+                                        device={props.device} 
+                                        hasData={props.rdx_hasESP32Metric}
+                                        comingFrom={props.rdx_comingFrom}
+                                />              
+                                <TempRDXChart 
+                                        history={props.rdx_history} 
+                                        device={props.device} 
+                                        value={props.rdx_lastESP32Metrics.values} 
+                                        hasData={props.rdx_hasESP32Metric}
+                                        comingFrom={props.rdx_comingFrom}
+                                />
                             </div>
 
 
@@ -104,8 +115,19 @@ const EnabledCapability = (props) => {
 
 
                             <div>
-                                <HumRDXMetrics values={props.rdx_lastESP32Metrics.values} hasData={props.rdx_hasESP32Metric}/>              
-                                <HumRDXChart history={props.rdx_history} value={props.rdx_lastESP32Metrics.values} hasData={props.rdx_hasESP32Metric}/>
+                                <HumRDXMetrics 
+                                            values={props.rdx_lastESP32Metrics.values} 
+                                            device={props.device} 
+                                            hasData={props.rdx_hasESP32Metric}
+                                            comingFrom={props.rdx_comingFrom}
+                                />              
+                                <HumRDXChart 
+                                            history={props.rdx_history} 
+                                            device={props.device} 
+                                            value={props.rdx_lastESP32Metrics.values} 
+                                            hasData={props.rdx_hasESP32Metric}
+                                            comingFrom={props.rdx_comingFrom}
+                                />
                             </div>
 
 
@@ -132,8 +154,19 @@ const EnabledCapability = (props) => {
 
 
                             <div>
-                                <PresRDXMetrics values={props.rdx_lastESP32Metrics.values} hasData={props.rdx_hasESP32Metric}/>              
-                                <PresRDXChart history={props.rdx_history} value={props.rdx_lastESP32Metrics.values} hasData={props.rdx_hasESP32Metric}/>
+                                <PresRDXMetrics 
+                                            values={props.rdx_lastESP32Metrics.values} 
+                                            device={props.device} 
+                                            hasData={props.rdx_hasESP32Metric}
+                                            comingFrom={props.rdx_comingFrom}
+                                />              
+                                <PresRDXChart 
+                                            history={props.rdx_history} 
+                                            device={props.device} 
+                                            value={props.rdx_lastESP32Metrics.values} 
+                                            hasData={props.rdx_hasESP32Metric}
+                                            comingFrom={props.rdx_comingFrom}
+                                />
                             </div>
 
 
@@ -171,13 +204,14 @@ const EnabledCapability = (props) => {
 }
 
 const mapStateToProps = (state) => {
-    console.log('MapToState:', state)
+//    console.log('MapToState:', state)
     return {
         rdx_lastESP32Metrics : state.generic.lastESP32Metric,
         rdx_lastNanoMetrics: state.generic.lastNanoMetric,
         rdx_devices: state.generic.devices,
         rdx_history: state.generic.history,
         rdx_hasESP32Metric: state.generic.hasESP32Metric,
+        rdx_comingFrom: state.generic.comingFrom,
     }
   }
   

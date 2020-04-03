@@ -27,6 +27,7 @@ const PresRDXMetrics = (props) => {
     }, [props.values.pressure])
 
     return (
+      (props.device.id === props.comingFrom) ?
         <React.Fragment>
         <div className={classes.metrics}>
         <Grid container alignItems="center" spacing={1}>
@@ -62,6 +63,8 @@ const PresRDXMetrics = (props) => {
         </Grid>
         </div>
       </React.Fragment>
+      :
+      <React.Fragment></React.Fragment>
     )
 }
 

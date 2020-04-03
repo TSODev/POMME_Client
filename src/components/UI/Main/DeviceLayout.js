@@ -1,14 +1,14 @@
 import React, {useState, useEffect} from 'react';
 
-import SENSORS from '../utilities/sensors';
+import SENSORS from '../../../utilities/sensors';
 
-import EnabledCapability from './UI/EnabledCapabilty';
-import EnabledRDXCapability from './UI/EnabledRDXCapabilty';
+import EnabledCapability from '../EnabledCapabilty';
+import EnabledRDXCapability from '../EnabledRDXCapabilty';
 
 import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
 import Grid from '@material-ui/core/Grid'
-import SVGSensorIcon from './UI/SVGIcons/SVGSensorIcon';
+import SVGSensorIcon from '../SVGIcons/SVGSensorIcon';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -67,7 +67,7 @@ const DeviceLayout = (props) => {
                     <Divider variant='fullWidth' />
                     <Grid container>
 
-                    <Grid className={classes.title} item sm={4}>
+                    <Grid className={classes.title} item sm={3}>
                     <Typography variant='h4'>
                         {props.device.alias || props.device.id}
                     </Typography>
@@ -86,7 +86,7 @@ const DeviceLayout = (props) => {
                 <div className={classes.root}>
                     <Divider variant='fullWidth' />
                     <Grid container>
-                    <Grid className={classes.title} item sm={4}>
+                    <Grid className={classes.title} item sm={3}>
                     <Typography variant='h4'>
                         {props.device.alias || props.device.id}
                     </Typography>
@@ -100,7 +100,7 @@ const DeviceLayout = (props) => {
                     </Grid>
                 </div>
                 :
-                <p>Unknow sensor connector</p>
+                <p>Unknow sensor connector : {props.device.connect}</p>
                 }
             </div>
            } 

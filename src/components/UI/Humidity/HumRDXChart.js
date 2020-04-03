@@ -24,7 +24,7 @@ const HumRDXChart = (props) => {
         console.log('[HUMRDXCHART]',props.values, props.hasData)
     }, [props.value])
 
-    if (props.hasData) {
+    if (props.hasData && (props.comingFrom === props.device.id)) {
       return (
         <div className={classes.chart}>
             <Grid container>

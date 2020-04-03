@@ -45,12 +45,12 @@ const Chart = (props) => {
       // const h = props.history[props.device];
       const hist = [];
       if (hdevice.length > 0){
-        console.log('[Chart]-History for Device',hdevice, hdevice[0], hdevice[0].values)
+//        console.log('[Chart]-History for Device',hdevice, hdevice[0], hdevice[0].values)
         const deviceHistory = hdevice[0].values;
-        console.log('[Chart]-deviceHistory',deviceHistory)
+//        console.log('[Chart]-deviceHistory',deviceHistory)
         if (deviceHistory.length >0) {
           deviceHistory[0].map( element => {
-            console.log('[Chart]-element',JSON.parse(element))
+//            console.log('[Chart]-element',JSON.parse(element))
             const el = JSON.parse(element)
             hist.push({
               temp: el.metrics.temp,

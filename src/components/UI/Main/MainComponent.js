@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-import MainLayout from '../components/UI/Main/MainLayout';
+import MainLayout from './MainLayout';
 import SyncLoader from 'react-spinners/SyncLoader';
 
 import Box from '@material-ui/core/Box';
@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 
 import Grid from '@material-ui/core/Grid';
 
-import Header from '../components/UI/Header';
+import Header from '../Header';
 
 
 const MainComponent = (props) => {
@@ -24,9 +24,9 @@ const MainComponent = (props) => {
               </Grid>
             </Grid>
             <MainLayout
-              metric={props.metric}
-              history={props.history}
-              devices={props.devices}
+              // metric={props.metric}
+              // history={props.history}
+              // devices={props.devices}
             />
           </div>
         );

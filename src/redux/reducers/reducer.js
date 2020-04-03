@@ -14,6 +14,7 @@ const initialState = {
     lastNanoMetric :{},
     hasESP32Metric : false,
     hasNanoMetric: false,
+    comingFrom: '',
 }
 
 const getNewESP32Metrics = (state, action) => {
@@ -24,7 +25,8 @@ const getNewESP32Metrics = (state, action) => {
 
     return updateObject(state, {
         lastESP32Metric: {device, type, moment: timestamp, values: action.data},
-        hasESP32Metric: true
+        hasESP32Metric: true,
+        comingFrom: device,
     })
 }
 

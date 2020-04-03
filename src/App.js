@@ -7,7 +7,7 @@ import moment from 'moment';
 import 'moment/locale/fr';
 import axios from './axios';
 
-import MainComponent from './components/MainComponent';
+import MainComponent from './components/UI/Main/MainComponent';
 import Sensor from './components/UI/Sensor';
 import SENSORS from './utilities/sensors';
 
@@ -82,7 +82,7 @@ class App extends Component {
       this.signalDevice('mset0', DHT22, SERIAL)
       this.props.onNewNanoMetric(data.mesure)
       this.setState({metric: {values}})
-      this.setState({hasData: true})
+
         })
 
     socket.on('esp32metric', (data) => {
@@ -90,6 +90,7 @@ class App extends Component {
       this.signalDevice(data.mesure.device, BME280, RABBIT)
       this.props.onNewESP32Metric(data.mesure)
       this.setState({esp32metric: data.mesure})
+      this.setState({hasData: true})
     })
 
     socket.on('startHistoricData',(data) => {
@@ -145,8 +146,9 @@ class App extends Component {
             <Route path="/" exact render={(props) => <MainComponent {...props} 
                                                       hasData={this.state.hasData} 
                                                       devices={this.state.devices}
-                                                      metric={this.state.metric}
-                                                      history={this.state.history}/>} 
+                                                      // metric={this.state.metric}
+                                                      // history={this.state.history}
+                                                      />} 
             />
             <Route path="/sensor:Id" exact component={Sensor} 
             />          

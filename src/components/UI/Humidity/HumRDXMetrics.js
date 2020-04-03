@@ -28,6 +28,7 @@ const HumRDXMetrics = (props) => {
     }, [props.values.humidity])
 
     return (
+      (props.device.id === props.comingFrom) ?
         <React.Fragment>
         <div className={classes.metrics}>
         <Grid container alignItems="center" spacing={1}>
@@ -63,6 +64,8 @@ const HumRDXMetrics = (props) => {
         </Grid>
         </div>
       </React.Fragment>
+      :
+      <React.Fragment></React.Fragment>
     )
 }
 

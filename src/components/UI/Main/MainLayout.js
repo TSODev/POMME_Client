@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import { connect } from 'react-redux';
 
-import DeviceLayout from '../../DeviceLayout';
+import DeviceLayout from './DeviceLayout';
 import Box from '@material-ui/core/Box';
 
 
@@ -142,9 +142,11 @@ const MainLayout = (props) => {
           <Box className={classes.root}>
 
             {
-              props.rdx_devices.map((d,index) => (
+              props.rdx_devices.map((d,index) => {
+                return (
                 <DeviceLayout className={classes.root} key={index} device={d}/>                
-              ))
+              )
+                })
             }
 
 
@@ -156,7 +158,6 @@ const MainLayout = (props) => {
 }
 
 const mapStateToProps = (state) => {
-  console.log('MapToState:', state)
   return {
       // rdx_lastESP32Metrics : state.generic.lastESP32Metric,
       // rdx_lastNanoMetrics: state.generic.lastNanoMetric,

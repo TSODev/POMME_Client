@@ -22,16 +22,16 @@ const TempRDXChart = (props) => {
   const classes = useStyles();
 
     useEffect(() => {
-        console.log('[TEMPRDXCHART]')
+        console.log('[TEMPRDXCHART]',props.value, props.comingFrom, props.device.id)
     }, [props.value])
 
-    if (props.hasData) {
+    if (props.hasData && (props.comingFrom === props.device.id)) {
       return (
         <div className={classes.chart}>
             <Grid container>
             <Grid item xs={12}>
                 <RDXChart
-                  device="24:6F:28:B2:3C:34"
+                  device={props.device.id}
                   history={props.history}
                   metric="temperature"
                   min="hmin"

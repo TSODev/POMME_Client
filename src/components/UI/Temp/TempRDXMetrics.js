@@ -48,13 +48,14 @@ const TempRDXMetrics = (props) => {
 
     const [metric, setmetric] = useState('--.-')
     useEffect(() => {
-        console.log('[TEMPRDXMETRICS]')
-        setmetric(Math.round(props.values.temperature *10) /10)
+        console.log('[TEMPRDXMETRICS]', props.device.id, props.comingFrom)
+        setmetric(props.hasData ? Math.round(props.values.temperature *10) /10 : '--.-')
     }, [props.values.temperature])
 
 
 
     return (
+        (props.device.id === props.comingFrom) ?
         <React.Fragment>
         <div className={classes.metrics}>
         <Grid className={classes.container} container alignItems="center">
@@ -90,6 +91,8 @@ const TempRDXMetrics = (props) => {
         </Grid>
         </div>
       </React.Fragment>
+      :
+      <React.Fragment></React.Fragment>
     )
 }
 

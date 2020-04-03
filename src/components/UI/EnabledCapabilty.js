@@ -58,7 +58,7 @@ const EnabledCapability = (props) => {
     // }, [props.capability])
 
     useEffect(() => {
-        console.log('[DEVICELAYOUT]-[CAPABILITY]', props.device, props.hasData)
+        console.log('[CAPABILITY]', props.device, props.hasData)
         const deviceHistory = props.rdx_history.filter(h => h.device === props.device.id)
         sethistory(deviceHistory)
 //        setmetrics(props.lastESP32Metric)
@@ -169,7 +169,7 @@ const EnabledCapability = (props) => {
 }
 
 const mapStateToProps = (state) => {
-    console.log('MapToState:', state)
+//    console.log('MapToState:', state)
     return {
         rdx_lastESP32Metrics : state.generic.lastESP32Metric,
         rdx_lastNanoMetrics: state.generic.lastNanoMetric,
