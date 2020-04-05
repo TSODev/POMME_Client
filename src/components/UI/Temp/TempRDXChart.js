@@ -25,7 +25,7 @@ const TempRDXChart = (props) => {
         console.log('[TEMPRDXCHART]',props.value, props.comingFrom, props.device.id)
     }, [props.value])
 
-    if (props.hasData && (props.comingFrom === props.device.id)) {
+    if (props.hasData) {
       return (
         <div className={classes.chart}>
             <Grid container>
@@ -37,6 +37,7 @@ const TempRDXChart = (props) => {
                   min="hmin"
                   max="hmax"
                   value={props.value}
+                  good={(props.comingFrom === props.device.id)}
                 />
             </Grid>
             </Grid>

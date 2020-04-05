@@ -29,9 +29,12 @@ const RDXChart = (props) => {
 
 
     useEffect(() => {
-        setMetricsData(MetricData => [...MetricsData, props.value]);
+        if (props.good) setMetricsData(MetricData => [...MetricsData, {temperature: props.value.temperature,
+                                                                        humidity: props.value.humidity,
+                                                                        pressure: props.value.pressure / 100,
+                                                                        moment: props.value.moment}]);
         console.log('[RDXCHART]-MetricsData', props.metric, props.value, MetricsData);
-    },[props.value])
+    },[props.value, props.good])
 
 
     useEffect(() => {

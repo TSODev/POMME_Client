@@ -45,6 +45,7 @@ const TempMetrics = (props) => {
               variantlabel="h5"
               variantvalue="h3"
               label="Température"
+              good={true}
             />
           </Grid>
           <Grid item xs={2} sm={2}>

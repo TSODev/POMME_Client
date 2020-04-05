@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -20,13 +20,24 @@ const useStyles = makeStyles(theme => ({
 const Metric = (props) => {
     const classes = useStyles();
 
+    const [last, setLast] = useState(0)
+
+    useEffect(() => {
+        console.log('[METRIC]', props.good, props.value, last)
+        if (props.good) setLast(props.value)
+    }, [props.good])
+
+const Data = (props) => {
+    return ((props.good) ? props.value : last)
+}
     return (
         <div className={classes.metric}>
             <Typography variant={props.variantlabel}>
                 {props.label}
             </Typography>
             <Typography variant={props.variantvalue}>
-                {props.value}{props.unit}
+                <Data />
+                {props.unit}
             </Typography>
         </div>
     )

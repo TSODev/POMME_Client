@@ -46,6 +46,7 @@ const HumMetrics = (props) => {
               variantlabel="h5"
               variantvalue="h3"
               label="Humidité"
+              good={true}
             />
           </Grid>
           <Grid className={classes.grid} item xs={2}>

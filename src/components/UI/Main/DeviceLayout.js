@@ -67,7 +67,7 @@ const DeviceLayout = (props) => {
                     <Divider variant='fullWidth' />
                     <Grid container>
 
-                    <Grid className={classes.title} item sm={3}>
+                    <Grid className={classes.title} item sm={4}>
                     <Typography variant='h4'>
                         {props.device.alias || props.device.id}
                     </Typography>
@@ -86,7 +86,7 @@ const DeviceLayout = (props) => {
                 <div className={classes.root}>
                     <Divider variant='fullWidth' />
                     <Grid container>
-                    <Grid className={classes.title} item sm={3}>
+                    <Grid className={classes.title} item sm={4}>
                     <Typography variant='h4'>
                         {props.device.alias || props.device.id}
                     </Typography>

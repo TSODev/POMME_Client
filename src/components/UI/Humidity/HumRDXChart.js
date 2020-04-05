@@ -24,18 +24,19 @@ const HumRDXChart = (props) => {
         console.log('[HUMRDXCHART]',props.values, props.hasData)
     }, [props.value])
 
-    if (props.hasData && (props.comingFrom === props.device.id)) {
+    if (props.hasData) {
       return (
         <div className={classes.chart}>
             <Grid container>
             <Grid item xs={12}>
                 <RDXChart
-                  device="24:6F:28:B2:3C:34"
+                  device={props.device.id}
                   history={props.history}
                   metric="humidity"
                   min="hmin"
                   max="hmax"
                   value={props.value}
+                  good={(props.comingFrom === props.device.id)}
                 />
             </Grid>
             </Grid>

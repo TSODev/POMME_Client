@@ -23,11 +23,12 @@ const PresRDXMetrics = (props) => {
     const [metric, setmetric] = useState('--.-')
     useEffect(() => {
         console.log('[PRESRDXMETRICS]')
-        setmetric(Math.round(props.values.pressure /10) /10)
+        if (props.comingFrom === props.device.id)
+        setmetric(Math.round(props.values.pressure /100) /1)
     }, [props.values.pressure])
 
     return (
-      (props.device.id === props.comingFrom) ?
+//      (props.device.id === props.comingFrom) ?
         <React.Fragment>
         <div className={classes.metrics}>
         <Grid container alignItems="center" spacing={1}>
@@ -49,6 +50,7 @@ const PresRDXMetrics = (props) => {
               variantlabel="h5"
               variantvalue="h3"
               label="Pression Atmospherique"
+              good={(props.device.id === props.comingFrom)}
             />
           </Grid>
           <Grid className={classes.grid} item xs={2}>
@@ -63,8 +65,8 @@ const PresRDXMetrics = (props) => {
         </Grid>
         </div>
       </React.Fragment>
-      :
-      <React.Fragment></React.Fragment>
+//      :
+//      <React.Fragment></React.Fragment>
     )
 }
 

@@ -24,11 +24,12 @@ const HumRDXMetrics = (props) => {
 
     useEffect(() => {
         console.log('[HUMRDXMETRICS]')
-        setmetric(Math.round(props.values.humidity *10) /10)
+        if (props.comingFrom === props.device.id)
+        setmetric(Math.round(props.values.humidity *1) /1)
     }, [props.values.humidity])
 
     return (
-      (props.device.id === props.comingFrom) ?
+//      (props.device.id === props.comingFrom) ?
         <React.Fragment>
         <div className={classes.metrics}>
         <Grid container alignItems="center" spacing={1}>
@@ -50,6 +51,7 @@ const HumRDXMetrics = (props) => {
               variantlabel="h5"
               variantvalue="h3"
               label="Humidité"
+              good={(props.device.id === props.comingFrom)}
             />
           </Grid>
           <Grid className={classes.grid} item xs={2}>
@@ -64,8 +66,8 @@ const HumRDXMetrics = (props) => {
         </Grid>
         </div>
       </React.Fragment>
-      :
-      <React.Fragment></React.Fragment>
+//      :
+//      <React.Fragment></React.Fragment>
     )
 }
 

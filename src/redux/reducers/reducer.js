@@ -42,9 +42,23 @@ const getNewNanoMetrics = (state, action) => {
     })
 }
 
+const compare = (a,b) => {
+    const nameA = a.alias.toUpperCase();
+    const nameB = b.alias.toUpperCase();
+
+    let comparaison = 0
+    if (nameA > nameB) {
+        comparaison = 1
+    } else if (nameB > nameA) {
+        comparaison = -1
+    }
+    return comparaison
+}
+
 const addNewDevice = (state, action) => {
     console.log('[Reducer]-addDevice', state, action)
     var newDevices = state.devices.concat(action.data)
+    newDevices.sort(compare)
 //     const newDevice = newDevices.filter(d => d.id === action.data.id)[0]
 //     const index = newDevices.indexOf(newDevice);
 // //    const nd = {...newDevice, sensor: SENSORS.models.filter(m => m.id === action.data.type)[0]}
@@ -128,8 +142,12 @@ const getHistoryForAllDevice = (state, action) => {
     const history = action.data.history;
     const stateHistory = state.history
     const historyForDevice = stateHistory.filter(h => h.device === action.data.device)
+    if (historyForDevice.length !== 0) {
     const historicValuesForDevice = historyForDevice[0].values
     historicValuesForDevice[0] = history
+    } else {
+
+    }
 //    console.log('historyForDevice', device, historicValuesForDevice);
 //    console.log('NewHistory:',...state.history)
     return updateObject(state, {

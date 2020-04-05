@@ -29,8 +29,8 @@ const Chart = (props) => {
 
 
     useEffect(() => {
-//        console.log('[CHART]', props.metric);
-        setMetricsData(MetricData => [...MetricsData, props.value]);
+        console.log('[CHART]', props.value, MetricsData);
+        setMetricsData(MetricData => [...MetricsData, {temp: props.value.temp, hum: props.value.hum, moment: moment().format('x')}]);
     },[props.value])
 
 //     useEffect(() => {

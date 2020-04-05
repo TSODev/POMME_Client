@@ -22,7 +22,7 @@ const TempChart = (props) => {
   const classes = useStyles();
 
     useEffect(() => {
-        console.log('[TEMPCHART]',props.device.id, props.history, props.hasData)
+        console.log('[TEMPCHART]',props.device.id, props.history, props.hasData, props.value)
     }, [props.value])
 
     if (props.hasData) {

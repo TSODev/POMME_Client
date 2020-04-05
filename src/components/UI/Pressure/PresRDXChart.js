@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
@@ -20,22 +20,25 @@ const PresRDXChart = (props) => {
 
   const classes = useStyles();
 
+
     useEffect(() => {
         console.log('[PRESRDXCHART]')
     }, [props.value])
 
-    if (props.hasData && (props.comingFrom === props.device.id)) {
+    if (props.hasData) {
       return (
         <div className={classes.chart}>
             <Grid container>
             <Grid item xs={12}>
                 <RDXChart
-                  device="24:6F:28:B2:3C:34"
+                  device={props.device.id}
                   history={props.history}
                   metric="pressure"
                   min="hmin"
                   max="hmax"
-                  value={Math.round(props.value/10)/10}
+//                  value={Math.round(props.value/10)/10}
+                  value={props.value}
+                  good={(props.comingFrom === props.device.id)}
                 />
             </Grid>
             </Grid>
